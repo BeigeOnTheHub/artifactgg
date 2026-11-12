@@ -43,11 +43,18 @@ See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Licence
 
-The code is public domain under CC0 1.0 (see `LICENSE`).
+Copyright (C) 2026 Beige. The code is licensed under the GNU Affero General
+Public License v3.0 or later (see `LICENSE`). In short: you can use, change
+and share it, but if you share a changed version, or run one as a website,
+you have to publish your source under the same licence and keep the credit.
 
-That doesn't cover the art in `assets/`. The map images, utility icons and
-scanner sprite are Vail VR artwork and belong to AEXLAB. The bundled libraries and fonts keep their own licences. Details are in
-`THIRD-PARTY-NOTICES`.
+The first public commit (a7645f7) went out under CC0 1.0. Anyone who got that
+copy keeps those rights for it.
+
+The licence doesn't cover the art in `assets/`. The map images, utility icons
+and scanner sprite are Vail VR artwork and belong to AEXLAB. It doesn't cover
+the artifactgg.com name either. The bundled libraries and fonts keep their own
+licences. Details are in `THIRD-PARTY-NOTICES`.
 
 Not affiliated with AEXLAB or the Vail VR team. If you own something used here
 and want it taken down, open an issue and it'll be removed.

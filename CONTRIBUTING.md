@@ -30,4 +30,5 @@ All three should pass. If you change behaviour, change or add the matching
   live under them.
 - Comments say why, not what.
 
-By contributing you agree your code is released under CC0, same as the rest.
+By contributing you agree your code is released under AGPL-3.0-or-later,
+same as the rest.

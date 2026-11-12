@@ -1,9 +1,9 @@
 THIRD-PARTY NOTICES
 ===================
 
-This project's own source code is dedicated to the public domain under CC0 1.0
-(see LICENSE). That dedication does NOT extend to the third-party works listed
-below, nor to anything under assets/:
+This project's own source code is licensed under the GNU Affero General Public
+License v3.0 or later (see LICENSE). That licence does NOT extend to the
+third-party works listed below, nor to anything under assets/:
 
   - assets/maps/**            Vail VR map artwork -- (c) AEXLAB / respective owners
   - assets/maps/kiiro/map-callouts.png
