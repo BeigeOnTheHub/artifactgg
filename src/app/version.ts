@@ -3,7 +3,7 @@
  * differs, the changelog modal auto-opens once and markChangelogSeen() records it.
  */
 
-export const APP_VERSION = '2.2.1';
+export const APP_VERSION = '3.0.0';
 export const LAST_SEEN_KEY = 'artifact-gg.v2.lastSeenChangelog';
 
 export function shouldAutoOpenChangelog(): boolean {

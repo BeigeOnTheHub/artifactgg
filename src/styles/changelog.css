@@ -83,6 +83,7 @@
 
 .changelog-modal-body ul { padding-left: 20px; margin: 0 0 8px; }
 .changelog-modal-body li { margin-bottom: 4px; }
+.changelog-modal-body a { color: var(--accent, #00ff88); }
 .changelog-modal-body code { background: var(--bg-3, #132620); padding: 1px 4px; border-radius: 2px; font-size: 12px; }
 
 /* -- compact reflow. ChangelogModal mounts on document.body (a
