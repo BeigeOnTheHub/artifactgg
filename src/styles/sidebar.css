@@ -1,0 +1,152 @@
+/* Sidebar shell layout. Children stack vertically inside #sidebar-root. */
+#sidebar-root {
+  display: flex;
+  flex-direction: column;
+  /* Only kicks in on very short windows, where the page itself won't scroll. */
+  overflow-y: auto;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  color: var(--ink-hi, #c9d1c8);
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px 10px;
+  border-bottom: 1px solid var(--line, #1c2e26);
+  background: var(--bg-1, #0a0e0c);
+}
+
+.sidebar-logo {
+  flex: 1;
+  font-family: var(--font-display, 'Rajdhani', sans-serif);
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 1.5px;
+  color: var(--ink-hi, #c9d1c8);
+}
+
+.sidebar-logo .logo-gg { color: var(--accent, #00ff88); }
+
+.sidebar-header-help {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.sidebar-header-help-btn {
+  width: 22px;
+  height: 22px;
+  background: var(--bg-3, #132620);
+  border: 1px solid var(--line, #1c2e26);
+  border-radius: 2px;
+  color: var(--ink-lo, #6c8e7a);
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 11px;
+  line-height: 1;
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (pointer: coarse), (max-width: 900px) {
+  .sidebar-header-help-btn { width: 44px; height: 44px; font-size: 14px; }
+}
+
+.sidebar-header-help-btn:hover {
+  color: var(--ink-hi, #c9d1c8);
+  background: color-mix(in srgb, var(--bg-3) 70%, var(--accent) 8%);
+}
+
+.sidebar-header-help-btn:focus-visible,
+.sidebar-tab:focus-visible,
+.sidebar-legal-link:focus-visible {
+  outline: 2px solid var(--accent, #00ff88);
+  outline-offset: 2px;
+}
+
+.sidebar-section {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--line, #1c2e26);
+}
+
+.sidebar-section:last-child {
+  border-bottom: none;
+}
+
+.sidebar-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--line, #1c2e26);
+  background: var(--bg-1, #0a0e0c);
+}
+
+.sidebar-tab {
+  flex: 1;
+  font-family: var(--font-display, 'Rajdhani', sans-serif);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  color: var(--ink-lo, #6c8e7a);
+  background: transparent;
+  border: none;
+  padding: 8px 0;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+
+.sidebar-tab[aria-selected="true"] {
+  color: var(--accent, #00ff88);
+  border-bottom-color: var(--accent, #00ff88);
+}
+
+.sidebar-tab:hover:not([aria-selected="true"]) {
+  color: var(--ink-hi, #c9d1c8);
+}
+
+.sidebar-content--hidden {
+  display: none !important;
+}
+
+.sidebar-notes {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+
+.sidebar-legal {
+  margin-top: auto;
+  padding: 10px 14px 12px;
+  border-top: 1px solid var(--line, #1c2e26);
+  /* Legal link on the left, version tag pinned to the right, both on one row. */
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+/* The version tag next to the legal link. Uses the bright ink so it reads
+   clearly against the sidebar background. */
+.sidebar-version {
+  flex: 0 0 auto;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--ink-hi, #c9d1c8);
+}
+
+.sidebar-legal-link {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--ink-lo, #6c8e7a);
+  cursor: pointer;
+}
+
+.sidebar-legal-link:hover { color: var(--accent, #00ff88); }

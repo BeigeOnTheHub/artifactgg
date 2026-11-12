@@ -1,0 +1,32 @@
+.notes-pane {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+}
+
+.notes-pane-textarea {
+  flex: 1;
+  min-height: 240px;
+  width: 100%;
+  resize: none;
+  border: none;
+  outline: none;
+  background: var(--bg-1, #0a0e0c);
+  color: var(--ink-hi, #c9d1c8);
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 13px;
+  line-height: 1.5;
+  padding: 14px;
+  box-sizing: border-box;
+}
+
+.notes-pane-textarea::placeholder {
+  color: var(--ink-dim, #6a9d83);
+  font-style: italic;
+}
+
+.notes-pane-textarea:focus {
+  background: var(--bg-2, #0d1513);
+}

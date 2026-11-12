@@ -1,0 +1,128 @@
+.onboarding {
+  position: fixed;
+  inset: 0;
+  /* Above the modal band (incl. the 9000 confirm dialog) so a tour step can
+     point at something while a dialog is open without hiding behind it. */
+  z-index: var(--z-onboarding);
+}
+.onboarding-backdrop {
+  position: absolute;
+  inset: 0;
+  /* Fully transparent -- the rest of the UI stays at full brightness, only
+     the highlighted target glows. The backdrop is still here as a click
+     target so anywhere outside the tooltip dismisses the tour. */
+  background: transparent;
+}
+/* Bright glow ring around the current step's target. Equal padding on all
+   four sides (the highlight rect is grown by HIGHLIGHT_PADDING in
+   Onboarding.ts), border is 2px on every side, and the outer box-shadow is
+   a soft pulse so the highlighted area visibly stands out against the
+   undimmed UI. pointer-events:none so the user can still click through. */
+.onboarding-highlight {
+  position: fixed;
+  pointer-events: none;
+  border: 2px solid var(--accent, #00ff88);
+  box-shadow:
+    0 0 0 1px rgba(0, 255, 136, 0.4),
+    0 0 14px 2px rgba(0, 255, 136, 0.65),
+    0 0 36px 6px rgba(0, 255, 136, 0.35);
+  box-sizing: border-box;
+  border-radius: 3px;
+  transition: left 160ms ease, top 160ms ease,
+              width 160ms ease, height 160ms ease;
+  z-index: calc(var(--z-onboarding) + 1);
+  animation: onboarding-highlight-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes onboarding-highlight-pulse {
+  0%, 100% {
+    box-shadow:
+      0 0 0 1px rgba(0, 255, 136, 0.4),
+      0 0 14px 2px rgba(0, 255, 136, 0.55),
+      0 0 36px 6px rgba(0, 255, 136, 0.28);
+  }
+  50% {
+    box-shadow:
+      0 0 0 1px rgba(0, 255, 136, 0.55),
+      0 0 18px 3px rgba(0, 255, 136, 0.85),
+      0 0 48px 10px rgba(0, 255, 136, 0.45);
+  }
+}
+.onboarding-tooltip {
+  position: fixed;
+  z-index: calc(var(--z-onboarding) + 2);
+  min-width: 260px;
+  max-width: 340px;
+  padding: 14px 16px;
+  background: var(--bg-2, #0d1513);
+  border: 1px solid var(--accent, #00ff88);
+  color: var(--ink-hi, #c9d1c8);
+  font-family: var(--font-body);
+  font-size: 13px;
+  line-height: 1.45;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  clip-path: polygon(
+    var(--corner-chamfer, 6px) 0,
+    100% 0,
+    100% calc(100% - var(--corner-chamfer, 6px)),
+    calc(100% - var(--corner-chamfer, 6px)) 100%,
+    0 100%,
+    0 var(--corner-chamfer, 6px)
+  );
+}
+.onboarding-title {
+  font-family: var(--font-display);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent, #00ff88);
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+.onboarding-body {
+  font-size: 13px;
+  color: var(--ink-hi, #c9d1c8);
+  margin-bottom: 10px;
+}
+.onboarding-meta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-lo, #6c8e7a);
+  margin-bottom: 10px;
+}
+.onboarding-controls {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+}
+.onboarding-controls button {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 6px 10px;
+  border: 1px solid var(--line, #1c2e26);
+  background: var(--bg-1, #0a0e0c);
+  color: var(--ink-hi, #c9d1c8);
+  cursor: pointer;
+  min-height: 32px;
+}
+.onboarding-controls button:hover { background: var(--bg-3, #132620); }
+.onboarding-controls .onboarding-next {
+  border-color: var(--accent, #00ff88);
+  color: var(--accent, #00ff88);
+}
+.onboarding-controls button:focus-visible {
+  outline: 2px solid var(--accent, #00ff88);
+  outline-offset: 2px;
+}
+
+@media (pointer: coarse), (max-width: 900px) {
+  .onboarding-controls button { min-height: 44px; padding: 8px 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .onboarding-highlight {
+    transition: none;
+    animation: none;
+  }
+}

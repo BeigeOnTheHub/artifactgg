@@ -1,0 +1,49 @@
+/* Theme token overrides. Dark is the :root default in tokens.css and needs no
+   block here. These attribute selectors out-specify the bare :root rules, so
+   load order doesn't matter. data-theme lives on <html> (set by themePref.ts). */
+
+/* Crossfade between colour modes (dark / light / high-contrast) instead of an
+   instant cut. themePref.applyThemeAnimated wraps the swap in a view
+   transition; this just makes the fade quick. The first paint on load isn't
+   animated. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 220ms;
+  animation-timing-function: ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}
+
+:root[data-theme="light"] {
+  --bg-0: #eceef0;
+  --bg-1: #f6f7f8;
+  --bg-2: #ffffff;
+  --bg-3: #e3e7ea;
+  --line: #ccd2d7;
+  --ink-hi: #1a1f24;
+  --ink-lo: #5b6670;
+  --ink-dim: #6a7682;
+  --accent: #00c46f;
+  --accent-soft: #2bd084;
+  --danger: #d31f2d;
+  --mesh-line: rgba(0, 0, 0, 0.05);
+}
+
+:root[data-theme="high-contrast"] {
+  --bg-0: #000000;
+  --bg-1: #000000;
+  --bg-2: #0a0f0d;
+  --bg-3: #10201a;
+  --line: #8fbfa8;
+  --ink-hi: #ffffff;
+  --ink-lo: #cfe6da;
+  --ink-dim: #cfe6da;
+  --accent: #1dff95;
+  --accent-soft: #7dffc2;
+  --danger: #ff6b76;
+  --mesh-line: rgba(255, 255, 255, 0.06);
+}

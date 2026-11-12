@@ -1,0 +1,57 @@
+/* src/styles/tbox.css */
+.tbox {
+  position: absolute;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  pointer-events: all;
+  -webkit-user-select: none;
+  user-select: none;
+}
+/* The .tbox rules above opt back into pointer events, which would let the
+   onion-skin copy of last frame's boxes swallow clicks meant for this one. */
+.onion-ghost .tbox,
+.onion-ghost .tbox-text,
+.onion-ghost .tbox-handle {
+  pointer-events: none;
+}
+.tbox.tbox--selected,
+.tbox.sel-highlight {
+  border-color: rgba(0, 255, 136, 0.9);
+}
+.tbox-text {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.55);
+  color: #c9d1c8;
+  border: none;
+  outline: none;
+  resize: none;
+  padding: 4px 6px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  box-sizing: border-box;
+  pointer-events: all;
+}
+.tbox-text:focus {
+  background: rgba(0, 0, 0, 0.75);
+}
+.tbox-handle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: rgba(0, 255, 136, 0.9);
+  border: 1px solid #07090a;
+  display: none;
+  pointer-events: all;
+}
+.tbox.tbox--selected .tbox-handle,
+.tbox.sel-highlight .tbox-handle {
+  display: block;
+}
+.tbox-handle--nw { top: -4px;    left: -4px;    cursor: nwse-resize; }
+.tbox-handle--n  { top: -4px;    left: calc(50% - 4px); cursor: ns-resize; }
+.tbox-handle--ne { top: -4px;    right: -4px;   cursor: nesw-resize; }
+.tbox-handle--e  { top: calc(50% - 4px); right: -4px;   cursor: ew-resize; }
+.tbox-handle--se { bottom: -4px; right: -4px;   cursor: nwse-resize; }
+.tbox-handle--s  { bottom: -4px; left: calc(50% - 4px); cursor: ns-resize; }
+.tbox-handle--sw { bottom: -4px; left: -4px;    cursor: nesw-resize; }
+.tbox-handle--w  { top: calc(50% - 4px); left: -4px;    cursor: ew-resize; }

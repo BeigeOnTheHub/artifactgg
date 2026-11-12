@@ -1,0 +1,44 @@
+/* Playback HUD overlay -- sits at the bottom-center of #map-viewer, just
+   above the frame-timeline strip. #map-viewer already excludes the 80px
+   timeline via bottom:80px in Shell.ts, so `bottom: 12px` here floats it
+   above the map area but below the timeline. */
+.frame-caption-overlay {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 25;
+  pointer-events: none;
+  max-width: min(720px, calc(100% - 32px));
+  padding: 10px 16px;
+  background: color-mix(in srgb, var(--bg-2, #0d1513) 92%, transparent);
+  border: 1px solid var(--accent, #00ff88);
+  color: var(--ink-hi, #c9d1c8);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.4;
+  text-align: center;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.45);
+  clip-path: polygon(
+    var(--corner-chamfer, 6px) 0,
+    100% 0,
+    100% calc(100% - var(--corner-chamfer, 6px)),
+    calc(100% - var(--corner-chamfer, 6px)) 100%,
+    0 100%,
+    0 var(--corner-chamfer, 6px)
+  );
+  /* Soft fade so the auto-advance change feels intentional, not a jump cut.
+     Skipped by prefers-reduced-motion below. */
+  animation: frame-caption-overlay-fade 240ms ease-out both;
+}
+
+.frame-caption-overlay[hidden] { display: none; }
+
+@keyframes frame-caption-overlay-fade {
+  from { opacity: 0; transform: translate(-50%, 4px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .frame-caption-overlay { animation: none; }
+}

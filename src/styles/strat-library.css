@@ -1,0 +1,283 @@
+.strat-library {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.strat-library-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+}
+.strat-library-panel {
+  position: relative;
+  width: 720px;
+  max-width: 90vw;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  font-family: var(--font-body);
+  color: var(--ink-hi);
+  clip-path: polygon(
+    var(--corner-bracket) 0,
+    100% 0,
+    100% calc(100% - var(--corner-bracket)),
+    calc(100% - var(--corner-bracket)) 100%,
+    0 100%,
+    0 var(--corner-bracket)
+  );
+}
+.strat-library-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--line);
+}
+.strat-library-title {
+  font-family: var(--font-display);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.strat-library-new-save {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 6px 10px;
+  border: 1px solid var(--accent);
+  background: transparent;
+  color: var(--accent);
+  cursor: pointer;
+}
+.strat-library-new-save:hover { background: var(--bg-3); }
+.strat-library-search {
+  padding: 10px 18px 0 18px;
+}
+.strat-library-search-input {
+  width: 100%;
+  box-sizing: border-box;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  padding: 8px 10px;
+  background: var(--bg-1);
+  color: var(--ink-hi);
+  border: 1px solid var(--line);
+  outline: none;
+}
+.strat-library-search-input:focus { border-color: var(--accent); }
+.strat-library-search-input::placeholder { color: var(--ink-lo); }
+.strat-library-list {
+  overflow-y: auto;
+  padding: 8px 12px 12px 12px;
+}
+.strat-library-empty {
+  padding: 24px 8px;
+  color: var(--ink-lo);
+  font-size: 13px;
+  text-align: center;
+}
+.strat-library-row {
+  display: grid;
+  grid-template-columns: 96px 1fr auto;
+  gap: 12px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  margin-top: 8px;
+  background: var(--bg-1);
+  align-items: center;
+}
+.strat-library-row-thumb {
+  width: 96px;
+  height: 54px;
+  object-fit: cover;
+  border: 1px solid var(--line);
+}
+.strat-library-row-meta { min-width: 0; }
+.strat-library-row-name {
+  font-family: var(--font-display);
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  color: var(--ink-hi);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.strat-library-row-sub {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-lo);
+  margin-top: 2px;
+}
+.strat-library-row-buttons {
+  display: flex;
+  gap: 4px;
+}
+.strat-library-row-buttons button {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink-hi);
+  cursor: pointer;
+}
+.strat-library-row-load { color: var(--accent); border-color: var(--accent); }
+.strat-library-row-delete { color: var(--danger); border-color: var(--danger); }
+.strat-library-row-buttons button:hover { background: var(--bg-3); }
+
+.strat-library-new-save:focus-visible,
+.strat-library-row-buttons button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* -- Themed rename modal (replaces window.prompt for the row Rename button) -- */
+.strat-library-rename {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal-popover);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.strat-library-rename-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+}
+.strat-library-rename-panel {
+  position: relative;
+  width: 380px;
+  max-width: 90vw;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px 18px;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  color: var(--ink-hi);
+  font-family: var(--font-body);
+  clip-path: polygon(
+    var(--corner-bracket) 0,
+    100% 0,
+    100% calc(100% - var(--corner-bracket)),
+    calc(100% - var(--corner-bracket)) 100%,
+    0 100%,
+    0 var(--corner-bracket)
+  );
+}
+.strat-library-rename-title {
+  font-family: var(--font-display);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.strat-library-rename-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-lo);
+}
+.strat-library-rename-input {
+  font-family: var(--font-body);
+  font-size: 14px;
+  padding: 8px 10px;
+  background: var(--bg-1);
+  color: var(--ink-hi);
+  border: 1px solid var(--line);
+  outline: none;
+}
+.strat-library-rename-input:focus { border-color: var(--accent); }
+.strat-library-rename-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 4px;
+}
+.strat-library-rename-buttons button {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink-hi);
+  cursor: pointer;
+}
+.strat-library-rename-save {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+.strat-library-rename-buttons button:hover { background: var(--bg-3); }
+
+@media (pointer: coarse), (max-width: 900px) {
+  .strat-library-rename-input { min-height: 44px; }
+  .strat-library-rename-buttons button { min-height: 44px; }
+}
+
+/* -- compact reflow. StratLibrary mounts on document.body (a
+   sibling of #app), so the hook is the layoutMode media query, not a
+   data-layout selector. The panel fills the viewport (less a small inset
+   for the safe area) and the row buttons drop to a full-width 44px row. -- */
+@media (pointer: coarse), (max-width: 900px) {
+  .strat-library {
+    padding: max(8px, env(safe-area-inset-top)) max(8px, env(safe-area-inset-right))
+             max(8px, env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left));
+  }
+  .strat-library-panel {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+  }
+  .strat-library-new-save {
+    min-height: 44px;
+    padding: 8px 12px;
+  }
+  .strat-library-row {
+    grid-template-columns: 96px 1fr;
+  }
+  .strat-library-row-buttons {
+    grid-column: 1 / -1;
+    flex-wrap: wrap;
+  }
+  .strat-library-row-buttons button {
+    flex: 1 1 auto;
+    min-height: 44px;
+    padding: 8px 10px;
+  }
+}
+
+.strat-library-row-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+}
+.strat-library-row-tag {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 10px;
+  line-height: 1;
+  padding: 3px 6px;
+  border: 1px solid var(--line, #1c2e26);
+  border-radius: 2px;
+  background: var(--bg-3, #132620);
+  color: var(--ink-lo, #6c8e7a);
+  cursor: pointer;
+  transition: color 120ms ease, border-color 120ms ease;
+}
+.strat-library-row-tag:hover { color: var(--accent, #00ff88); border-color: var(--accent, #00ff88); }
+.strat-library-row-tag:focus-visible {
+  outline: 2px solid var(--accent, #00ff88);
+  outline-offset: 1px;
+}

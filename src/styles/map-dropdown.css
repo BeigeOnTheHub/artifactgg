@@ -1,0 +1,109 @@
+.map-dropdown-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 6px 10px;
+  background: var(--bg-3, #132620);
+  border: 1px solid var(--line, #1c2e26);
+  border-radius: 3px;
+  color: var(--ink-hi, #c9d1c8);
+  font-family: var(--font-display, 'Rajdhani', sans-serif);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.map-dropdown-btn:hover { background: color-mix(in srgb, var(--bg-3) 80%, var(--accent) 5%); }
+
+.map-dropdown-thumb { width: 28px; height: 18px; object-fit: cover; border-radius: 1px; }
+.map-dropdown-label { flex: 1; }
+.map-dropdown-chev { color: var(--ink-lo, #6c8e7a); font-size: 10px; }
+
+.map-dropdown-list {
+  margin-top: 4px;
+  background: var(--bg-2, #0d1513);
+  border: 1px solid var(--line, #1c2e26);
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+/* `display: flex` above wins over the default UA `[hidden] { display: none }`,
+   which is why the list looked permanently open before. Restore the hide. */
+.map-dropdown-list[hidden] { display: none; }
+
+.map-dropdown-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  background: transparent;
+  border: none;
+  color: var(--ink-hi, #c9d1c8);
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 12px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.map-dropdown-row:hover { background: var(--bg-3, #132620); }
+.map-dropdown-row.active { background: color-mix(in srgb, var(--accent) 12%, transparent); color: var(--accent, #00ff88); }
+
+.map-dropdown-wip-badge {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 9px;
+  letter-spacing: 1px;
+  padding: 1px 5px;
+  border-radius: 2px;
+  background: color-mix(in srgb, #f0a500 18%, transparent);
+  border: 1px solid color-mix(in srgb, #f0a500 50%, transparent);
+  color: #f0a500;
+  flex-shrink: 0;
+}
+
+.map-dropdown-callouts-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 7px 10px;
+  background: transparent;
+  border: none;
+  border-top: 1px solid var(--line, #1c2e26);
+  color: var(--ink-hi, #c9d1c8);
+  font-family: var(--font-display, 'Rajdhani', sans-serif);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.map-dropdown-callouts-row:hover { background: var(--bg-3, #132620); }
+
+.map-dropdown-callouts-pill {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 10px;
+  letter-spacing: 1px;
+  padding: 2px 8px;
+  border-radius: 2px;
+  background: var(--bg-3, #132620);
+  color: var(--ink-lo, #6c8e7a);
+}
+
+.map-dropdown-callouts-row[aria-pressed="true"] .map-dropdown-callouts-pill {
+  background: color-mix(in srgb, var(--accent) 20%, transparent);
+  color: var(--accent, #00ff88);
+}
+
+.map-dropdown-btn:focus-visible,
+.map-dropdown-row:focus-visible,
+.map-dropdown-callouts-row:focus-visible {
+  outline: 2px solid var(--accent, #00ff88);
+  outline-offset: -2px;
+}

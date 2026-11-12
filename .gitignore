@@ -1,0 +1,16 @@
+node_modules/
+dist/
+test-results/
+public/assets/
+*.tsbuildinfo
+# compiled config siblings from tsc -b (the .ts versions are the source)
+vite.config.js
+vite.config.d.ts
+vitest.config.js
+vitest.config.d.ts
+playwright.config.js
+playwright.config.d.ts
+
+.env
+.env.*
+!.env.example

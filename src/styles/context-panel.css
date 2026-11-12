@@ -1,0 +1,192 @@
+.context-panel { display: flex; flex-direction: column; gap: 10px; min-height: 0; }
+
+/* Per-tool panels stack their rows with the same rhythm as the panel column
+   itself - without this, e.g. the QuickAdd grid and its show-ranges toggle, or
+   the cone spread label and its segmented control, sit flush against each
+   other. */
+.cp-panel { display: flex; flex-direction: column; gap: 10px; }
+
+.cp-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 10px;
+  color: var(--ink-lo, #6c8e7a);
+  letter-spacing: 1px;
+  /* Allow children to shrink below their intrinsic widths so the slider
+     never pushes the value/label off-screen on narrow sidebars. */
+  min-width: 0;
+}
+
+/* The player SCALE row only applies in manual mode - dim it (and let the
+   disabled slider stop interaction) when auto sizing is on. */
+.cp-row--disabled { opacity: 0.4; }
+
+/* Self-sufficient typography so a bare .cp-label (e.g. the cone "SPREAD"
+   label, which sits directly under .cp-panel rather than inside a row) renders
+   at the panel's mono/10px scale instead of inheriting the 16px body font. */
+.cp-label {
+  flex: 0 0 auto;
+  text-transform: uppercase;
+  color: var(--ink-lo, #6c8e7a);
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+.cp-value { color: var(--ink-hi, #c9d1c8); margin-left: auto; flex: 0 0 auto; }
+
+/* A compact, editable counterpart to .cp-value - used by the draw-tool pen
+   size so the number is type-able and stays in sync with the slider. */
+.cp-value-input {
+  width: 3.5ch;
+  text-align: right;
+  background: var(--bg-3, #132620);
+  border: 1px solid var(--line, #1c2e26);
+  border-radius: 2px;
+  color: var(--ink-hi, #c9d1c8);
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 10px;
+  padding: 2px 4px;
+}
+.cp-value-input:focus { outline: none; border-color: var(--accent, #00ff88); }
+
+.cp-slider {
+  flex: 1 1 0;
+  /* <input type="range"> ships with an opinionated implicit min-width that
+     refuses to shrink below ~100px, which pushes the value off the right
+     edge on the smallest sidebar width. min-width:0 lets flex actually
+     shrink it. */
+  min-width: 0;
+  appearance: none;
+  height: 3px;
+  background: var(--bg-3, #132620);
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.cp-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 12px; height: 12px;
+  background: var(--accent, #00ff88);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.cp-slider::-moz-range-thumb {
+  width: 12px; height: 12px;
+  background: var(--accent, #00ff88);
+  border: none; border-radius: 50%;
+  cursor: pointer;
+}
+
+.cp-toggle-row {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 10px;
+  color: var(--ink-lo, #6c8e7a);
+  letter-spacing: 1.2px;
+}
+
+.cp-toggle-row .cp-segmented-btn {
+  flex: 0 0 auto;
+  padding: 4px 12px;
+}
+
+.cp-segmented {
+  display: flex; gap: 2px;
+  background: var(--bg-3, #132620);
+  border: 1px solid var(--line, #1c2e26);
+  border-radius: 3px;
+  padding: 2px;
+}
+
+.cp-segmented-btn {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--ink-lo, #6c8e7a);
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 9px;
+  letter-spacing: 1px;
+  padding: 4px 6px;
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+.cp-segmented-btn.active {
+  background: var(--accent, #00ff88);
+  color: var(--bg-0, #07090a);
+}
+
+/*
+ * Grid variant used by the QuickAdd panel - 7 quickadd kinds wrap into
+ * three columns. Default cp-segmented spacing is too tight for this
+ * layout (buttons collide and the inner padding squeezes the labels).
+ * This adds row gap, a slightly larger button padding, and a guaranteed
+ * 3-up flex basis so wrapping always lands cleanly.
+ */
+.cp-segmented.cp-segmented-grid {
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 4px;
+}
+.cp-segmented.cp-segmented-grid .cp-segmented-btn {
+  flex: 1 1 calc(33.333% - 4px);
+  min-width: 0;
+  padding: 6px 4px;
+}
+
+.cp-input {
+  background: var(--bg-3, #132620);
+  border: 1px solid var(--line, #1c2e26);
+  border-radius: 2px;
+  color: var(--ink-hi, #c9d1c8);
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 11px;
+  padding: 4px 6px;
+  /* Same intrinsic-min-width problem as .cp-slider - let flex shrink it
+     so the player-name input never overflows the panel. */
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.cp-input:focus { outline: none; border-color: var(--accent, #00ff88); }
+
+/* Sized to line up with the toggle-row buttons (.cp-segmented-btn at 9px) so
+   the player NAME row matches the TEAM / SPAWN-DEAD rows above and below it. */
+.cp-input--compact { font-size: 9px; padding: 4px 8px; }
+
+/* Player NAME input in a .cp-toggle-row: fixed compact width (not .cp-input's
+   flex:1 stretch), padding trimmed to match the 9px pills, and it may shrink on
+   narrow sidebars. Keep the explicit font-size:9px: command-palette.css has its
+   own `.cp-input` (14px, "cp" = command palette) that can win on bundle order.
+   The .cp-toggle-row scope beats it on specificity. */
+.cp-toggle-row .cp-input { flex: 0 1 auto; width: 116px; min-width: 0; }
+.cp-toggle-row .cp-input--compact { padding: 3px 8px; font-size: 9px; }
+
+/* A segmented control that wraps onto extra rows when its buttons don't fit
+   one line - used by the Shapes tool so SQUARE/CIRCLE/TRIANGLE/LINE/ARROW
+   never overflow past the sidebar edge. */
+.cp-segmented--wrap { flex-wrap: wrap; }
+.cp-segmented--wrap .cp-segmented-btn { flex: 1 1 auto; min-width: 0; }
+
+/* The TEXT row on a selected text box. The box on the map carries the map's
+   scale, so on a phone its own field is ~5px tall - this is the one you can
+   actually type into. */
+.cp-text-input {
+  flex: 1 1 auto;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 6px 8px;
+  resize: none;
+  border: 1px solid var(--line, #1c2e26);
+  border-radius: 6px;
+  background: var(--bg-1, #0a0e0c);
+  color: var(--ink-hi, #c9d1c8);
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 13px;
+  line-height: 1.4;
+}
+.cp-text-input:focus { outline: 2px solid var(--accent, #00ff88); outline-offset: -2px; }

@@ -1,0 +1,25 @@
+/* Per-item flash played during a frame transition. SVG groups get a colour-tinted
+   drop-shadow (CSS `outline` doesn't render on SVG); HTML text boxes also
+   get a real outline pulse. The fade itself is driven by inline opacity from the
+   TransitionController, not CSS. */
+:root { --frame-transition-ms: 320ms; }
+
+@keyframes frame-flash-in {
+  0%, 100% { filter: none; }
+  35%      { filter: drop-shadow(0 0 4px var(--accent, #00ff88)) drop-shadow(0 0 1px var(--accent, #00ff88)); }
+}
+@keyframes frame-flash-out {
+  0%, 100% { filter: none; }
+  35%      { filter: drop-shadow(0 0 4px var(--danger, #ff4655)) drop-shadow(0 0 1px var(--danger, #ff4655)); }
+}
+.frame-flash-in  { animation: frame-flash-in  var(--frame-transition-ms) ease-out; }
+.frame-flash-out { animation: frame-flash-out var(--frame-transition-ms) ease-out; }
+
+@keyframes frame-flash-in-outline  { 0%, 100% { outline-color: transparent; } 35% { outline-color: var(--accent, #00ff88); } }
+@keyframes frame-flash-out-outline { 0%, 100% { outline-color: transparent; } 35% { outline-color: var(--danger, #ff4655); } }
+.tbox.frame-flash-in  { outline: 2px solid transparent; animation: frame-flash-in-outline  var(--frame-transition-ms) ease-out; }
+.tbox.frame-flash-out { outline: 2px solid transparent; animation: frame-flash-out-outline var(--frame-transition-ms) ease-out; }
+
+@media (prefers-reduced-motion: reduce) {
+  .frame-flash-in, .frame-flash-out, .tbox.frame-flash-in, .tbox.frame-flash-out { animation: none; }
+}

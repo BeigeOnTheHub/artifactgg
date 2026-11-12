@@ -1,0 +1,66 @@
+.command-palette {
+  position: fixed; inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex; justify-content: center; align-items: flex-start;
+  padding-top: 12vh;
+  /* Above the library/share/confirm modals (8000-9000) so Ctrl+K from inside
+     one of those doesn't open the palette behind it where it steals focus. */
+  z-index: var(--z-overlay-top);
+  font-family: var(--font-body, 'Inter', sans-serif);
+}
+
+.command-palette[hidden] { display: none; }
+
+.cp-inner {
+  width: 560px; max-width: 90vw;
+  background: var(--bg-2, #0d1513);
+  border: 1px solid var(--line, #1c2e26);
+  border-radius: 4px;
+  display: flex; flex-direction: column;
+  max-height: 60vh;
+}
+
+.cp-input {
+  background: var(--bg-3, #132620);
+  border: none;
+  border-bottom: 1px solid var(--line, #1c2e26);
+  color: var(--ink-hi, #c9d1c8);
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 14px;
+  padding: 12px 14px;
+  outline: none;
+}
+
+.cp-list {
+  overflow-y: auto;
+  display: flex; flex-direction: column;
+}
+
+.cp-row {
+  display: grid;
+  grid-template-columns: 60px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 14px;
+  cursor: pointer;
+  color: var(--ink-hi, #c9d1c8);
+  font-size: 13px;
+}
+
+.cp-row.selected { background: color-mix(in srgb, var(--accent) 12%, transparent); }
+.cp-row.disabled { opacity: 0.45; cursor: not-allowed; }
+
+.cp-group {
+  font-family: var(--font-display, 'Rajdhani', sans-serif);
+  font-size: 11px; letter-spacing: 1.2px;
+  color: var(--ink-lo, #6c8e7a);
+  text-transform: uppercase;
+}
+
+.cp-title { color: var(--ink-hi, #c9d1c8); }
+
+.cp-hotkey {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 11px;
+  color: var(--ink-lo, #6c8e7a);
+}

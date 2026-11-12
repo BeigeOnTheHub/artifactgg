@@ -1,0 +1,9 @@
+{
+  // Production build typecheck. Same strict options as tsconfig.json but app
+  // sources only -- the *.test.ts files (and the e2e tests/) are not part of
+  // the shipped bundle, so a half-finished test shouldn't be able to break a
+  // deploy. `npm run typecheck` still uses tsconfig.json and checks everything.
+  "extends": "./tsconfig.json",
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.test.ts", "tests/**/*.ts"]
+}

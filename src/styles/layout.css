@@ -1,0 +1,75 @@
+/* Shell chrome geometry, keyed by #app[data-layout] so the compact touch
+   layout can reflow without JS. 100dvh rather than 100vh, and no minimum
+   size, so the app always fits the window instead of overflowing it. */
+
+/* 100%, not 100vw: vw counts a scrollbar's width and can round past the window. */
+#app { position: relative; width: 100%; height: 100dvh; overflow: hidden; }
+
+#app #map-viewer {
+  position: absolute; overflow: hidden; touch-action: none;
+  /* Background-color provides the dark void; background-image lays a
+     viewport-fixed diagonal criss-cross mesh on top (two
+     repeating-linear-gradients at 45deg + 135deg = 1px diamond lines on a
+     32px period) so the map area reads as a canvas rather than the browser
+     default. ~4% white on near-black reads as a dim grey. */
+  background-color: var(--bg-1);
+  background-image:
+    repeating-linear-gradient(45deg, var(--mesh-line) 0, var(--mesh-line) 1px, transparent 1px, transparent 32px),
+    repeating-linear-gradient(135deg, var(--mesh-line) 0, var(--mesh-line) 1px, transparent 1px, transparent 32px);
+  /* user-select:none kills double-click text drag highlights inside the
+     viewer; the per-image draggable=false plus the dragstart listeners in
+     Shell.ts kill the native HTML5 drag. */
+  user-select: none; -webkit-user-drag: none;
+}
+/* left:280px top:36px right:0 bottom:80px - bottom:80px carves out the frame
+   timeline (position:fixed height:80px in styles/frame-timeline.css) so it
+   sits next to the map area instead of overlaying it. Keep in sync with the
+   timeline's CSS height and TIMELINE_PX in app/viewport.ts. */
+#app[data-layout="desktop"] #map-viewer { left: 280px; top: 36px; right: 0; bottom: 80px; }
+#app[data-layout="compact"] #map-viewer { inset: 0; }
+
+#app #sidebar-root {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 280px;
+  background: var(--bg-2); border-right: 1px solid var(--line); z-index: 10;
+}
+#app #topbar-root {
+  position: absolute; left: 280px; top: 0; right: 0; height: 36px;
+  /* --bg-2 (matching the sidebar) so all three chrome regions read as a
+     single frame around the --bg-1 map area. */
+  background: var(--bg-2); border-bottom: 1px solid var(--line); z-index: 10;
+}
+#app[data-layout="compact"] #sidebar-root,
+#app[data-layout="compact"] #topbar-root { display: none; }
+
+#app #zoom-viewport { position: absolute; inset: 0; }
+/* will-change is set dynamically in Shell.applyTransform (only while a zoom/pan
+   gesture is in flight) -- a static one pins a base-res GPU texture that scale()
+   upscales, pixellating the map + every node past ~1x. */
+#app #map-canvas-wrap { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; }
+#app #map-image {
+  display: block; width: 1920px; height: 1080px;
+  /* object-fit:contain renders the source PNG at its natural aspect ratio,
+     so square (2048x2048) and other non-16:9 maps are not squashed into the
+     1920x1080 coord-space frame. */
+  object-fit: contain;
+  /* user-drag:none as well as draggable=false: some browsers still
+     kick off a native image drag despite the attribute and only respect the
+     CSS property. */
+  user-select: none; pointer-events: none;
+  -webkit-user-drag: none; user-drag: none;
+}
+
+.skip-link {
+  position: absolute;
+  left: 8px;
+  top: -48px;
+  z-index: 10001;
+  background: var(--bg-2);
+  color: var(--ink-hi);
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  padding: 8px 12px;
+  transition: top 120ms ease;
+}
+.skip-link:focus { top: 8px; outline: 2px solid var(--accent); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .skip-link { transition: none; } }

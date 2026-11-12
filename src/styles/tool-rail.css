@@ -1,0 +1,54 @@
+.tool-rail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.tool-rail-btn {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-3, #132620);
+  border: 1px solid var(--line, #1c2e26);
+  border-radius: 3px;
+  color: var(--ink-lo, #6c8e7a);
+  cursor: pointer;
+  padding: 0;
+  transition: background 60ms ease-out, border-color 60ms ease-out, color 60ms ease-out;
+}
+
+.tool-rail-btn:hover { background: color-mix(in srgb, var(--bg-3) 70%, var(--accent) 8%); color: var(--ink-hi, #c9d1c8); }
+
+.tool-rail-btn:focus-visible {
+  outline: 2px solid var(--accent, #00ff88);
+  outline-offset: 2px;
+}
+
+.tool-rail-btn.active {
+  background: var(--accent, #00ff88);
+  border-color: var(--accent, #00ff88);
+  color: var(--bg-0, #07090a);
+}
+
+.tool-rail-icon {
+  width: 24px;
+  height: 24px;
+  display: block;
+  pointer-events: none;
+}
+
+/*
+ * The PNG glyphs are white on transparent.
+ *   - default: tinted down to ink-lo
+ *   - hover:   no filter (the sepia tint would make white look darker)
+ *   - active:  inverted to black, since white on the green fill is barely visible
+ */
+img.tool-rail-icon {
+  filter: invert(0.7) sepia(1) saturate(0.4); /* tints PNG to match ink-lo */
+}
+
+.tool-rail-btn:hover img.tool-rail-icon { filter: none; }
+.tool-rail-btn.active img.tool-rail-icon { filter: invert(1); }

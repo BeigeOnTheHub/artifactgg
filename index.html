@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- viewport-fit=cover lets safe-area-inset env() values resolve on
+         notched/edge-to-edge phones (otherwise they're 0 and the mobile
+         chrome ignores the camera notch / home indicator). -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>artifactgg.com - Vail VR Strats Maker</title>
+    <link rel="icon" href="/assets/site-bar/web-icon.png" />
+    <link rel="apple-touch-icon" href="/assets/site-bar/web-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#0a0e0c" />
+    <meta name="description" content="Free fan-made tactical drawing tool for Vail VR. Pick a map, place players, drop vision cones, sketch routes, scrub frames, and share strats with your team." />
+    <!-- open graph (link previews on discord, etc.) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="artifactgg.com" />
+    <meta property="og:title" content="artifactgg.com - Vail VR Strats Maker" />
+    <meta property="og:description" content="Draw and share Vail VR strats - maps, players, vision cones, routes, frame-by-frame playback." />
+    <!-- crawlers fetch this off-site, so it needs the full absolute url, not a
+         site-relative path. -->
+    <meta property="og:image" content="https://artifactgg.com/assets/site-bar/web-icon.png" />
+    <meta property="og:url" content="https://artifactgg.com/" />
+    <!-- twitter card -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="artifactgg.com - Vail VR Strats Maker" />
+    <meta name="twitter:description" content="Draw and share Vail VR strats - maps, players, vision cones, routes, frame-by-frame playback." />
+    <meta name="twitter:image" content="https://artifactgg.com/assets/site-bar/web-icon.png" />
+    <link rel="stylesheet" href="/src/styles/tokens.css" />
+    <link rel="stylesheet" href="/src/styles/themes.css" />
+    <!-- boot skeleton styles live in their own file, not an inline <style>,
+         because the prod CSP is style-src 'self' and would block an inline
+         block (leaving the skeleton unstyled on the live site). -->
+    <link rel="stylesheet" href="/src/styles/boot.css" />
+  </head>
+  <body>
+    <div id="boot-skeleton" aria-hidden="true">
+      <div class="bsk-sidebar">
+        <div class="bsk-block bsk-pill bsk-shimmer"></div>
+        <div class="bsk-block bsk-tool bsk-shimmer"></div>
+        <div class="bsk-block bsk-tool bsk-shimmer"></div>
+        <div class="bsk-block bsk-tool bsk-shimmer"></div>
+        <div class="bsk-block bsk-tool bsk-shimmer"></div>
+        <div class="bsk-block bsk-tool bsk-shimmer"></div>
+      </div>
+      <div class="bsk-main">
+        <div class="bsk-topbar">
+          <div class="bsk-block bsk-pill bsk-shimmer"></div>
+          <div class="bsk-block bsk-pill bsk-shimmer"></div>
+          <div class="bsk-block bsk-pill bsk-shimmer"></div>
+        </div>
+        <div class="bsk-canvas"><div class="bsk-wordmark">artifactgg.com</div></div>
+        <div class="bsk-timeline">
+          <div class="bsk-block bsk-card bsk-shimmer"></div>
+          <div class="bsk-block bsk-card bsk-shimmer"></div>
+          <div class="bsk-block bsk-card bsk-shimmer"></div>
+        </div>
+      </div>
+    </div>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

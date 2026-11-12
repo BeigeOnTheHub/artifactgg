@@ -1,0 +1,28 @@
+.callouts-layer-img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 1080px;
+  /* Match the base map: don't squash non-16:9 callouts overlays into the
+     1920×1080 frame - render at natural aspect ratio inside the same box. */
+  object-fit: contain;
+  pointer-events: none;
+  -webkit-user-select: none;
+  user-select: none;
+  /* Match the base map img - block native HTML5 drag so users never see the
+     "no-drop" cursor while panning. */
+  -webkit-user-drag: none;
+  user-drag: none;
+  z-index: 0; /* between #map-image (z 0 baseline) and SVG layers (z 1+). */
+
+  /* Stacked drop-shadows form an opaque outline around the callout glyphs so
+     they read clearly against busy map textures. The first shadow is offset
+     down-right and the second up-left, then any remaining sides get a tight
+     shadow at zero offset, which together produce a 1.5px outline regardless
+     of background colour. */
+  filter:
+    drop-shadow(0 0 1.5px rgba(0, 0, 0, 0.95))
+    drop-shadow(0 0 1.5px rgba(0, 0, 0, 0.95))
+    drop-shadow(0 0 1px rgba(0, 0, 0, 0.85));
+}

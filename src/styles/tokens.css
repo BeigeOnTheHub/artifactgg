@@ -1,0 +1,160 @@
+/* Self-hosted via @fontsource. Was hotlinked from fonts.googleapis.com,
+   which sends every visitor's IP to Google with no consent - the exact
+   thing German courts have already ruled a GDPR breach. Now nothing
+   leaves the user's browser to load fonts. Weights match what the old
+   Google URL requested. */
+@import '@fontsource/rajdhani/500.css';
+@import '@fontsource/rajdhani/600.css';
+@import '@fontsource/rajdhani/700.css';
+@import '@fontsource/jetbrains-mono/400.css';
+@import '@fontsource/jetbrains-mono/500.css';
+@import '@fontsource/jetbrains-mono/600.css';
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+
+:root {
+  --bg-0: #07090a;
+  --bg-1: #0a0e0c;
+  --bg-2: #0d1513;
+  --bg-3: #132620;
+  --line: #1c2e26;
+  --ink-hi: #c9d1c8;
+  --ink-lo: #6c8e7a;
+  /* Was #3e7d5f which scraped ~1.8:1 against --bg-1 -- below WCAG AA for any
+     text. Lifted so the notes placeholder (the only
+     consumer) clear ~5:1 while still reading as the dimmest tier. */
+  --ink-dim: #6a9d83;
+  --accent: #00ff88;
+  --accent-soft: #5bffb0;
+  --danger: #ff4655;
+
+  /* Diagonal criss-cross mesh over the map area. A token so the light /
+     high-contrast themes can swap it to a dark-on-light line (see themes.css);
+     the dark default matches the original hardcoded value. */
+  --mesh-line: rgba(255, 255, 255, 0.04);
+
+  --font-display: 'Rajdhani', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --font-body: 'Inter', sans-serif;
+
+  --corner-chamfer: 6px;
+  --corner-bracket: 14px;
+
+  /* Live sidebar width. Defaults to the desktop value; the small-window
+     overrides below adjust it in lockstep with #sidebar-root. Anything that
+     hugs the sidebar's right edge (e.g. the frame timeline) should reference
+     this so it tracks automatically when the sidebar shrinks. */
+  --sidebar-width: 280px;
+
+  /* Overlay stacking order. Higher sits closer to the user. In-canvas HUD
+     layers (sidebar, topbar, timeline, legend, colour picker, etc.) keep
+     their own small local z-index values; these are for the full-screen
+     overlays that stack on top of them. Add new overlays here rather than
+     picking another magic number. */
+  --z-modal: 8000;          /* library dialog backdrop */
+  --z-modal-popover: 8100;  /* a popover inside a modal (library rename row) */
+  --z-share: 8500;          /* share dialog (sits over the library) */
+  --z-confirm: 9000;        /* confirm dialog (over share + library) */
+  --z-overlay-top: 9100;    /* command palette + keyboard hints (over modals) */
+  --z-onboarding: 9300;     /* product tour - over everything but toasts */
+  --z-toast: 10000;         /* notifications - always on top */
+}
+
+html, body {
+  margin: 0;
+  background: var(--bg-0);
+  color: var(--ink-hi);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* The app fills the window and never scrolls as a page; panels that need to
+   scroll do it inside themselves. */
+html, body { overflow: hidden; }
+
+/* Global scrollbar styling - every scroll container in the app inherits
+   the same thin dark theme that started on the frame timeline. Firefox
+   and modern Chromium pick up the standard properties; older WebKit
+   uses the pseudo-element rules. Scoped to all elements so the changelog,
+   command palette, strat library, sidebar, kh-list etc. all match. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 4px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--ink-lo);
+}
+
+/* --- Accessibility: small-window adaptations ---
+   The sidebar should shrink on narrow viewports rather than push the map off
+   the right edge. The topbar similarly shrinks and remains scrollable. The
+   colour picker repositions so it never lands off-screen on small windows.
+   These rules are intentionally permissive - content scrolls when the
+   intrinsic width exceeds available space, no JS layout work needed. */
+
+#sidebar-root {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+#sidebar-root,
+#topbar-root,
+#map-viewer {
+  box-sizing: border-box;
+}
+#sidebar-root > * { padding: 8px; box-sizing: border-box; }
+#topbar-root { padding: 0 8px; box-sizing: border-box; overflow: auto; }
+
+/* Scoped to desktop layout on purpose. These shrink rules use !important, and
+   unscoped they beat the compact full-bleed rule on every <=900px viewport,
+   leaving a dead band where the hidden sidebar would be. Any <=900px window
+   is compact anyway (see COMPACT_QUERY), so desktop never actually hits them. */
+@media (max-width: 900px) {
+  #app[data-layout="desktop"] { --sidebar-width: 220px; }
+  #app[data-layout="desktop"] #sidebar-root { width: 220px !important; }
+  #app[data-layout="desktop"] #topbar-root  { left: 220px !important; }
+  #app[data-layout="desktop"] #map-viewer   { left: 220px !important; }
+}
+
+@media (max-width: 700px) {
+  #app[data-layout="desktop"] { --sidebar-width: 180px; }
+  #app[data-layout="desktop"] #sidebar-root { width: 180px !important; }
+  #app[data-layout="desktop"] #topbar-root  { left: 180px !important; }
+  #app[data-layout="desktop"] #map-viewer   { left: 180px !important; }
+  .colour-picker { left: 188px !important; right: 8px; width: auto !important; }
+}
+
+/* Universal baseline padding for built-in panels. Each panel-style class
+   already sits inside a styled container; the inner padding here gives every
+   group of controls a small breathing room. */
+.cp-panel,
+.context-panel,
+.notes-pane,
+.frame-timeline,
+.changelog-modal,
+.share-dialog,
+.confirm-modal,
+.command-palette,
+.strat-library,
+.keyboard-hints {
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+/* Tool-context panels live inside the sidebar (which already adds 8px of
+   padding), so 12px more on each side leaves the slider/label/value rows
+   short on space at narrow widths. Tighten the inner padding here so the
+   contents - text + slider - always fit. */
+.cp-panel { padding: 6px 8px; }
+.context-panel { padding: 6px 8px; }

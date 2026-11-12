@@ -1,0 +1,9 @@
+/* Layer visibility, toggled by data attributes on the zoom viewport (see
+   app/layerVisibility.ts). Textboxes match by class: TextLayer has no single
+   root, each .tbox sits directly in #map-canvas-wrap. */
+#zoom-viewport[data-hide-strokes="true"] #stroke-canvas { display: none; }
+#zoom-viewport[data-hide-shapes="true"] #shape-layer { display: none; }
+#zoom-viewport[data-hide-cones="true"] #cone-layer { display: none; }
+#zoom-viewport[data-hide-players="true"] #player-layer { display: none; }
+#zoom-viewport[data-hide-quickadds="true"] #quickadd-layer { display: none; }
+#zoom-viewport[data-hide-textboxes="true"] .tbox { display: none; }

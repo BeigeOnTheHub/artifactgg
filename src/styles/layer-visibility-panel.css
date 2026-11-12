@@ -1,0 +1,49 @@
+.layer-visibility {
+  padding: 8px 12px 12px 12px;
+}
+.layer-visibility-title {
+  font-family: var(--font-display, ui-sans-serif, sans-serif);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-lo, #6c8e7a);
+  margin: 0 0 8px 2px;
+}
+.layer-visibility-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+}
+.layer-visibility-btn {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  padding: 6px 8px;
+  border: 1px solid var(--line, #1c2e26);
+  background: var(--bg-1, #0a0e0c);
+  color: var(--ink-lo, #6c8e7a);
+  cursor: pointer;
+  min-height: 28px;
+  text-align: left;
+}
+.layer-visibility-btn:hover {
+  color: var(--ink-hi, #c9d1c8);
+  border-color: var(--ink-lo, #6c8e7a);
+}
+.layer-visibility-btn[aria-pressed="true"] {
+  color: var(--accent, #00ff88);
+  border-color: var(--accent, #00ff88);
+}
+.layer-visibility-btn[aria-pressed="false"] {
+  /* Hidden layers stay readable but read as "off" -- crossed-out and dim. */
+  text-decoration: line-through;
+  opacity: 0.65;
+}
+.layer-visibility-btn:focus-visible {
+  outline: 2px solid var(--accent, #00ff88);
+  outline-offset: 1px;
+}
+
+@media (pointer: coarse), (max-width: 900px) {
+  .layer-visibility-btn { min-height: 36px; }
+}

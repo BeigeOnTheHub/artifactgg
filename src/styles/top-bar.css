@@ -1,0 +1,93 @@
+.topbar {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 12px;
+  gap: 12px;
+  /* Mirror the sidebar: when the topbar contents are wider than the
+     available width (small windows, lots of action buttons), the row
+     scrolls horizontally instead of clipping or wrapping. */
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.topbar-mode-tabs {
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--line, #1c2e26);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.topbar-mode-tab {
+  font-family: var(--font-display, 'Rajdhani', sans-serif);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: var(--ink-lo, #6c8e7a);
+  background: var(--bg-2, #0d1513);
+  border: none;
+  padding: 6px 14px;
+  cursor: pointer;
+}
+
+.topbar-mode-tab + .topbar-mode-tab {
+  border-left: 1px solid var(--line, #1c2e26);
+}
+
+.topbar-mode-tab[aria-pressed="true"] {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent, #00ff88);
+}
+
+.topbar-mode-tab:hover:not([aria-pressed="true"]) {
+  color: var(--ink-hi, #c9d1c8);
+}
+
+.topbar-spacer { flex: 1; }
+
+.topbar-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.topbar-action-btn {
+  background: var(--bg-3, #132620);
+  border: 1px solid var(--line, #1c2e26);
+  border-radius: 2px;
+  color: var(--ink-lo, #6c8e7a);
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 10px;
+  letter-spacing: 1px;
+  padding: 4px 10px;
+  cursor: pointer;
+}
+
+.topbar-action-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.topbar-action-btn:not(:disabled):hover { background: color-mix(in srgb, var(--bg-3) 70%, var(--accent) 8%); color: var(--ink-hi, #c9d1c8); }
+
+/* Theme cycle button - sits in the actions row, same look as the action
+   buttons but with a small left gap to set it apart, and the brand accent on
+   hover to read as the "settings"-ish control it is. */
+.topbar-theme-btn {
+  margin-left: 6px;
+  background: var(--bg-3, #132620);
+  border: 1px solid var(--line, #1c2e26);
+  border-radius: 2px;
+  color: var(--ink-lo, #6c8e7a);
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 10px;
+  letter-spacing: 1px;
+  padding: 4px 10px;
+  cursor: pointer;
+}
+.topbar-theme-btn:hover { border-color: var(--accent, #00ff88); color: var(--accent, #00ff88); }
+
+/* Keyboard-only focus rings. :focus-visible (not :focus) so a mouse click
+   doesn't leave the ring stuck on the button afterwards. */
+.topbar-mode-tab:focus-visible,
+.topbar-action-btn:focus-visible,
+.topbar-theme-btn:focus-visible {
+  outline: 2px solid var(--accent, #00ff88);
+  outline-offset: 2px;
+}

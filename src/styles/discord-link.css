@@ -1,0 +1,45 @@
+/* Top-right HUD link to the project Discord. Mirrors the player legend's
+   top-left placement; same untransformed viewer layer so zoom/pan never
+   move it. */
+.discord-link {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 20;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 6px;
+  background: color-mix(in srgb, var(--bg-2, #0d1513) 88%, transparent);
+  border: 1px solid var(--line, #1c2e26);
+  border-radius: 3px;
+  color: var(--ink-lo, #6c8e7a);
+  text-decoration: none;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+  transition: color 120ms ease, border-color 120ms ease,
+              background 120ms ease, transform 120ms ease;
+}
+.discord-link:hover {
+  color: #5865f2; /* Discord brand blurple -- only used on hover, lets the
+                     glyph pop without staining the rest of the chrome. */
+  border-color: #5865f2;
+  background: color-mix(in srgb, var(--bg-2, #0d1513) 80%, #5865f2 8%);
+}
+.discord-link:focus-visible {
+  outline: 2px solid var(--accent, #00ff88);
+  outline-offset: 2px;
+}
+.discord-link:active { transform: translateY(1px); }
+
+.discord-link-icon {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
+@media (pointer: coarse), (max-width: 900px) {
+  .discord-link { width: 44px; height: 44px; padding: 9px; }
+  .discord-link-icon { width: 26px; height: 26px; }
+}

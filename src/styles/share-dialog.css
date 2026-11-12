@@ -1,0 +1,105 @@
+.share-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-share);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.share-dialog-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+}
+.share-dialog-panel {
+  position: relative;
+  min-width: 360px;
+  max-width: 480px;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  padding: 18px 20px 16px 20px;
+  font-family: var(--font-body);
+  color: var(--ink-hi);
+  clip-path: polygon(
+    var(--corner-bracket) 0,
+    100% 0,
+    100% calc(100% - var(--corner-bracket)),
+    calc(100% - var(--corner-bracket)) 100%,
+    0 100%,
+    0 var(--corner-bracket)
+  );
+}
+.share-dialog-title {
+  font-family: var(--font-display);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.share-dialog-url-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.share-dialog-url {
+  flex: 1;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  padding: 8px 10px;
+  background: var(--bg-1);
+  color: var(--ink-hi);
+  border: 1px solid var(--line);
+  outline: none;
+}
+.share-dialog-url:focus { border-color: var(--accent); }
+.share-dialog-copy,
+.share-dialog-done {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  background: var(--bg-1);
+  color: var(--ink-hi);
+  cursor: pointer;
+}
+.share-dialog-copy:hover,
+.share-dialog-done:hover { background: var(--bg-3); }
+.share-dialog-copy { border-color: var(--accent); color: var(--accent); }
+.share-dialog-success {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.share-dialog-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 4px;
+}
+.share-dialog-footer .share-dialog-done { margin-left: auto; }
+
+/* -- compact reflow. ShareDialog mounts on document.body (a
+   sibling of #app), so the hook is the layoutMode media query, not a
+   data-layout selector. The panel is capped to the viewport with a
+   scrollable body, and the action controls get a 44px touch target. -- */
+@media (pointer: coarse), (max-width: 900px) {
+  .share-dialog {
+    padding: max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right))
+             max(12px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+  }
+  .share-dialog-panel {
+    box-sizing: border-box;
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    overflow-y: auto;
+  }
+  .share-dialog-url { min-height: 44px; }
+  .share-dialog-copy,
+  .share-dialog-done {
+    min-height: 44px;
+  }
+}

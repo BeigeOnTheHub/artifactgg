@@ -1,0 +1,94 @@
+.confirm-modal {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-confirm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.confirm-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+}
+.confirm-modal-panel {
+  position: relative;
+  min-width: 360px;
+  max-width: 520px;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  padding: 18px 20px 16px 20px;
+  font-family: var(--font-body);
+  color: var(--ink-hi);
+  clip-path: polygon(
+    var(--corner-bracket) 0,
+    100% 0,
+    100% calc(100% - var(--corner-bracket)),
+    calc(100% - var(--corner-bracket)) 100%,
+    0 100%,
+    0 var(--corner-bracket)
+  );
+}
+.confirm-modal-title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  color: var(--accent);
+}
+.confirm-modal-body {
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--ink-hi);
+  margin-bottom: 16px;
+}
+.confirm-modal-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+.confirm-modal-cancel,
+.confirm-modal-confirm {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  background: var(--bg-1);
+  color: var(--ink-hi);
+  cursor: pointer;
+}
+.confirm-modal-cancel:hover { border-color: var(--ink-lo); }
+.confirm-modal-confirm--discard,
+.confirm-modal-confirm--clear-frame {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.confirm-modal-confirm--delete-strat {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+.confirm-modal-confirm:hover { background: var(--bg-3); }
+
+/* -- compact reflow. ConfirmModal mounts on document.body; the
+   panel's desktop min-width:360px is tight on a phone, so cap it to the
+   viewport and bump the buttons to a 44px touch target. -- */
+@media (pointer: coarse), (max-width: 900px) {
+  .confirm-modal { padding: 16px; }
+  .confirm-modal-panel {
+    box-sizing: border-box;
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+  }
+  .confirm-modal-buttons { gap: 10px; }
+  .confirm-modal-cancel,
+  .confirm-modal-confirm {
+    flex: 1 1 auto;
+    min-height: 44px;
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+}

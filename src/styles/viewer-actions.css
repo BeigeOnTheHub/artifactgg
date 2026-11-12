@@ -1,0 +1,98 @@
+/* Bottom-right viewer HUD: stacked column of icon buttons that sit above
+   the frame-timeline strip (the viewer itself already excludes the 80px
+   timeline). Mirrors the discord-link top-right placement and uses the
+   same translucent-chip aesthetic. */
+.viewer-actions {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  z-index: 22;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.viewer-actions-btn {
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: color-mix(in srgb, var(--bg-2, #0d1513) 88%, transparent);
+  border: 1px solid var(--line, #1c2e26);
+  border-radius: 3px;
+  color: var(--ink-lo, #6c8e7a);
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+  transition: color 120ms ease, border-color 120ms ease,
+              background 120ms ease, transform 120ms ease;
+}
+.viewer-actions-btn:hover {
+  color: var(--accent, #00ff88);
+  border-color: var(--accent, #00ff88);
+  background: color-mix(in srgb, var(--bg-2, #0d1513) 78%, var(--accent, #00ff88) 8%);
+}
+.viewer-actions-clear:hover {
+  /* Clear-all is destructive enough that hover should warn rather than
+     read as a friendly accent. Same red the share Delete button uses. */
+  color: #ff8b96;
+  border-color: #ff8b96;
+  background: color-mix(in srgb, var(--bg-2, #0d1513) 78%, #ff8b96 10%);
+}
+.viewer-actions-btn:focus-visible {
+  outline: 2px solid var(--accent, #00ff88);
+  outline-offset: 2px;
+}
+.viewer-actions-btn:active { transform: translateY(1px); }
+.viewer-actions-icon {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+/* Zoom % input lives between the +/- buttons. Same chip width so the column
+   reads as a unit. number-input spinners are hidden -- the +/- buttons next
+   to it do the same job with bigger touch targets. */
+.viewer-actions-zoom-input {
+  width: 36px;
+  height: 28px;
+  padding: 0 2px;
+  background: color-mix(in srgb, var(--bg-2, #0d1513) 88%, transparent);
+  border: 1px solid var(--line, #1c2e26);
+  border-radius: 3px;
+  color: var(--ink-hi, #c9d1c8);
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+  -moz-appearance: textfield;
+}
+.viewer-actions-zoom-input::-webkit-outer-spin-button,
+.viewer-actions-zoom-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+.viewer-actions-zoom-input:hover { border-color: var(--ink-lo, #6c8e7a); }
+.viewer-actions-zoom-input:focus,
+.viewer-actions-zoom-input:focus-visible {
+  outline: none;
+  border-color: var(--accent, #00ff88);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent, #00ff88) 35%, transparent);
+}
+
+.viewer-actions-sep {
+  height: 1px;
+  margin: 4px 6px;
+  background: var(--line, #1c2e26);
+}
+
+@media (pointer: coarse), (max-width: 900px) {
+  .viewer-actions-zoom-input { width: 44px; height: 36px; font-size: 13px; }
+}
+
+@media (pointer: coarse), (max-width: 900px) {
+  .viewer-actions-btn { width: 44px; height: 44px; }
+  .viewer-actions-icon { width: 24px; height: 24px; }
+}

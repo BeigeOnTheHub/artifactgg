@@ -1,0 +1,41 @@
+.canvas-hint {
+  position: absolute;
+  left: 50%;
+  top: 16px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: color-mix(in srgb, var(--bg-2, #0d1513) 88%, transparent);
+  border: 1px solid var(--line, #1c2e26);
+  border-radius: 4px;
+  color: var(--ink-lo, #6c8e7a);
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 13px;
+  /* Never block drawing on the canvas underneath -- only the × is clickable.
+     Sits in the in-canvas HUD band (player-legend 20, viewer-actions 22). */
+  pointer-events: none;
+  z-index: 22;
+  user-select: none;
+}
+
+.canvas-hint[hidden] { display: none; }
+
+.canvas-hint-text { white-space: nowrap; }
+
+.canvas-hint-close {
+  pointer-events: auto;
+  border: none;
+  background: transparent;
+  color: var(--ink-lo, #6c8e7a);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 2px;
+}
+.canvas-hint-close:hover { color: var(--ink-hi, #c9d1c8); }
+.canvas-hint-close:focus-visible {
+  outline: 2px solid var(--accent, #00ff88);
+  outline-offset: 1px;
+}

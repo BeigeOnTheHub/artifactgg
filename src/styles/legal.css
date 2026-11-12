@@ -1,0 +1,119 @@
+/* Same look as the changelog modal - kept as its own class set so the two
+   don't tread on each other. */
+.legal-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.legal-modal[hidden] { display: none !important; }
+
+.legal-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.legal-modal-panel {
+  position: relative;
+  width: 560px;
+  max-width: calc(100vw - 80px);
+  max-height: 80vh;
+  background: var(--bg-2, #0d1513);
+  border: 1px solid var(--line, #1c2e26);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+}
+
+.legal-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line, #1c2e26);
+}
+
+.legal-modal-title {
+  font-family: var(--font-display, 'Rajdhani', sans-serif);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 2px;
+  color: var(--accent, #00ff88);
+}
+
+.legal-modal-close {
+  background: transparent;
+  border: none;
+  color: var(--ink-lo, #6c8e7a);
+  font-size: 22px;
+  line-height: 1;
+  padding: 0 4px;
+  cursor: pointer;
+}
+
+.legal-modal-close:hover { color: var(--ink-hi, #c9d1c8); }
+
+.legal-modal-body {
+  padding: 18px 22px;
+  overflow-y: auto;
+  color: var(--ink-hi, #c9d1c8);
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.legal-modal-body h2 {
+  font-family: var(--font-display, 'Rajdhani', sans-serif);
+  font-size: 16px;
+  letter-spacing: 1px;
+  color: var(--accent, #00ff88);
+  margin: 0 0 12px;
+}
+
+.legal-modal-body h3 {
+  font-family: var(--font-display, 'Rajdhani', sans-serif);
+  font-size: 13px;
+  letter-spacing: 1px;
+  color: var(--ink-hi, #c9d1c8);
+  margin: 14px 0 6px;
+}
+
+.legal-modal-body ul { padding-left: 20px; margin: 0 0 8px; }
+.legal-modal-body li { margin-bottom: 4px; }
+.legal-modal-body a { color: var(--accent, #00ff88); }
+
+.legal-report-btn {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 12px;
+  padding: 6px 10px;
+  border: 1px solid var(--line, #1c2e26);
+  background: var(--bg-1, #0a0e0c);
+  color: var(--ink-hi, #c9d1c8);
+  cursor: pointer;
+}
+.legal-report-btn:hover { border-color: var(--accent, #00ff88); color: var(--accent, #00ff88); }
+.legal-report-hint { font-size: 11px; color: var(--ink-lo, #6c8e7a); margin-left: 6px; }
+
+/* -- compact reflow. LegalModal mounts on document.body (a
+   sibling of #app), so the hook is the layoutMode media query. The panel
+   fills the viewport (less a small safe-area inset); the close and
+   report-issue buttons get a 44px touch target. -- */
+@media (pointer: coarse), (max-width: 900px) {
+  .legal-modal {
+    padding: max(8px, env(safe-area-inset-top)) max(8px, env(safe-area-inset-right))
+             max(8px, env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left));
+  }
+  .legal-modal-panel {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    max-height: 100%;
+  }
+  .legal-modal-close { min-width: 44px; min-height: 44px; }
+  .legal-report-btn { min-height: 44px; }
+}

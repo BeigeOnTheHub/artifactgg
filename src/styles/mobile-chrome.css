@@ -1,0 +1,460 @@
+/* The band heights, in one place. The rail used to hardcode the top bar's 56px
+   and the tallest sheet's 45dvh in its own max-height calc, so it was guessing at
+   the size of two things it does not own - and when the sheets moved off the
+   bottom on a short screen, nothing linked the two rules. Anything that has to
+   clear a band reads these instead. */
+#app[data-layout="compact"] {
+  --mob-topbar-h: 56px;
+  --mob-strip-h: 53px;
+}
+
+.mob-topbar {
+  position: absolute; left: 0; right: 0; top: 0; z-index: 20;
+  display: flex; align-items: center; gap: 8px;
+  /* Left and right as well as top. Only the vertical insets were handled, and
+     sideways the cutout moves to a side - which is exactly where the title and
+     the five action buttons live. */
+  padding: max(6px, env(safe-area-inset-top))
+           max(10px, env(safe-area-inset-right))
+           6px
+           max(10px, env(safe-area-inset-left));
+  min-height: 44px; color: var(--ink-hi, #c9d1c8);
+  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0));
+  font: 600 13px/1.2 system-ui, sans-serif; pointer-events: none;
+}
+.mob-topbar > * { pointer-events: auto; }
+.mob-title { flex: 1 1 0; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* The editing top bar's title is a button that opens the map sheet. Styled as
+   plain text plus a chevron so it still reads as a title rather than a control
+   competing with the five icon buttons. The chevron is ::after, not a child
+   node, so titleEl.textContent stays exactly the map name for the mapId
+   subscription. */
+.mob-title-btn {
+  min-height: 44px; padding: 0 6px 0 0; text-align: left;
+  border: 0; background: none; color: inherit; font: inherit;
+  touch-action: manipulation; cursor: pointer;
+}
+.mob-title-btn::after { content: ' \25be'; opacity: 0.7; }
+.mob-title-btn:focus-visible { outline: 2px solid var(--accent, #00ff88); outline-offset: 2px; }
+/* Five icon-only action buttons + title share a 360px row; force a hard
+   44x44 box so a label change can't push the row into overflow. The action
+   icons centre via inline-flex; SVG sizes are set in chromeIcon(). */
+.mob-menu-btn {
+  width: 44px; height: 44px; flex-shrink: 0; padding: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--line, #1c2e26); border-radius: 8px;
+  background: rgba(0,0,0,0.55); color: inherit;
+  touch-action: manipulation; cursor: pointer;
+}
+.mob-menu-btn svg { display: block; }
+.mob-menu-btn:focus-visible { outline: 2px solid var(--accent, #00ff88); outline-offset: 2px; }
+.mob-sheet {
+  position: absolute; left: 0; right: 0;
+  /* env(keyboard-inset-height) lifts the sheet above an on-screen keyboard
+     on browsers that expose it (modern Chromium with the virtual-keyboard
+     opt-in). KeyboardAutoPan handles the rest via visualViewport so the JS
+     and CSS paths are both safe defaults; whichever fires first wins. */
+  bottom: env(keyboard-inset-height, 0px);
+  z-index: 30;
+  /* 45dvh, not 60: at 60 the colour sheet ran to 59% of a 390x844 phone and the
+     menu sheet 63%, which is what "takes up half the screen" was. Overflow keeps
+     the taller sheets scrollable rather than clipped. */
+  /* border-box, or the padding and border sit outside the cap and the menu sheet
+     comes out at 401px against a 380px (45dvh) limit. There is no global
+     box-sizing reset in this app - each component sets its own. */
+  box-sizing: border-box;
+  max-height: 45dvh; overflow: auto;
+  /* Padding rather than an offset for the side insets, so the sheet still meets
+     the physical edge and only its content clears the cutout. Same treatment
+     changelog.css, legal.css, share-dialog.css and strat-library.css use. */
+  padding: 10px
+           calc(12px + env(safe-area-inset-right))
+           calc(10px + env(safe-area-inset-bottom))
+           calc(12px + env(safe-area-inset-left));
+  background: var(--bg-2, #0d1513); border-top: 1px solid var(--line, #1c2e26);
+  border-radius: 14px 14px 0 0; color: var(--ink-hi, #c9d1c8);
+  font: 13px/1.5 system-ui, sans-serif;
+}
+.mob-sheet h3 { margin: 4px 0 6px; font-size: 13px; }
+.mob-notes { white-space: pre-wrap; color: var(--ink-lo, #6c8e7a); }
+.mob-selsheet { display: flex; flex-direction: column; gap: 8px; }
+
+/* Every sheet's close button is a corner glyph on the title line rather than a
+   44px row of its own - that row alone was ~54px of each sheet's height. The
+   sheet is position:absolute, so it is already the containing block. 36px is a
+   deliberate exception to the 40px floor: a corner target with nothing else
+   near it, which is the standard treatment for a sheet dismiss. */
+.mob-sheet > [class$="sheet-close"] {
+  position: absolute; top: 6px; right: 8px;
+  width: 36px; height: 36px; font-size: 20px; line-height: 1;
+}
+.mob-sheet > h3:first-of-type { margin-right: 44px; }
+/* The tool and selection sheets carry no heading, so the glyph would sit on top
+   of the first control row - it stole 36x36 of the player sheet's TEAM button.
+   Inset the whole content instead of pushing it down: the panels are
+   label-left/control-right, so the controls simply end before the glyph column
+   and no vertical space is lost. */
+.mob-toolsheet, .mob-selsheet { padding-right: 52px; }
+
+/* The sheets host the desktop context-panel DOM, which stacks a full-width label
+   above each full-width control - five controls came to 352px on a phone. One
+   line per control instead, with secondary controls at 40px; they sit in a
+   6px-gapped row so effective spacing stays ~46px. Sliders keep 44 because the
+   thumb needs the height. */
+.mob-sheet .cp-row, .mob-sheet .cp-toggle-row {
+  display: flex; align-items: center; gap: 8px; min-height: 0;
+}
+.mob-sheet .cp-row > .cp-label, .mob-sheet .cp-toggle-row > .cp-label {
+  flex: 0 0 auto; min-width: 64px;
+}
+.mob-sheet .cp-slider { flex: 1 1 auto; min-height: 44px; }
+.mob-sheet .cp-value-input, .mob-sheet .cp-value { flex: 0 0 auto; min-height: 40px; }
+.mob-sheet .cp-segmented { gap: 6px; }
+.mob-sheet .cp-segmented-btn { min-height: 40px; min-width: 40px; }
+
+#app[data-layout="compact"] [data-testid="frame-timeline"] {
+  position: absolute; left: 0; right: 0; bottom: 0; top: auto; height: auto;
+  z-index: 20; display: flex; align-items: center; gap: 8px;
+  padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
+  background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.7));
+  overflow-x: auto; overscroll-behavior: contain;
+}
+#app[data-layout="compact"] [data-testid="frame-timeline"] button { touch-action: manipulation; }
+/* Only the strip's own controls get the 44px floor. The chips inside each card are
+   28-30px on purpose (frame-timeline.css), a blanket button rule overlaps them. */
+#app[data-layout="compact"] .frame-timeline-add,
+#app[data-layout="compact"] .frame-timeline-onion,
+#app[data-layout="compact"] .frame-timeline-play { min-width: 44px; min-height: 44px; }
+
+/* An inactive card is just its number. The active one expands and lays its chips
+   out in a row - the strip stays short, nothing overlaps, and six frames are not
+   all sideways scrolling. */
+#app[data-layout="compact"] .frame-timeline-card { width: 44px; height: 36px; }
+#app[data-layout="compact"] .frame-timeline-add { height: 36px; }
+#app[data-layout="compact"] .frame-timeline-card:not([aria-current="true"]) :is(.frame-timeline-card-delete, .frame-timeline-card-dur, .frame-timeline-card-cap, .frame-timeline-card-cap--set) {
+  display: none;
+}
+#app[data-layout="compact"] .frame-timeline-card[aria-current="true"] {
+  width: auto; gap: 4px; padding: 0 4px 0 8px; justify-content: flex-start;
+}
+#app[data-layout="compact"] .frame-timeline-card[aria-current="true"] :is(.frame-timeline-card-delete, .frame-timeline-card-dur, .frame-timeline-card-cap, .frame-timeline-card-cap--set) {
+  position: static; top: auto; right: auto;
+  min-width: 40px; min-height: 30px; width: auto; height: auto;
+}
+/* Glyph instead of the "Prev frame" words, which ate 88px of the actions cluster. */
+#app[data-layout="compact"] .frame-timeline-onion-label { display: none; }
+#app[data-layout="compact"] .frame-timeline-onion-icon { display: block; width: 22px; height: 22px; }
+/* The delay stepper lives in the View sheet on a phone, so hide the strip's copy. */
+#app[data-layout="compact"] [data-testid="frame-timeline"] .frame-timeline-delay-wrap { display: none; }
+/* 4px, not 8: the 44px play button sets the floor, padding is the only height to save. */
+#app[data-layout="compact"] [data-testid="frame-timeline"] {
+  padding: 4px
+           max(10px, env(safe-area-inset-right))
+           calc(4px + env(safe-area-inset-bottom))
+           max(10px, env(safe-area-inset-left));
+}
+
+/* View sheet: the delay stepper shares a line with its label. */
+.mob-viewsheet-delay-row { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+.mob-viewsheet-delay-row .frame-timeline-delay { min-height: 40px; width: 72px; }
+.mob-legend-toggle { min-width: 44px; min-height: 44px; touch-action: manipulation; pointer-events: auto; }
+.mob-undo:disabled, .mob-redo:disabled, .mob-delete:disabled { opacity: 0.4; pointer-events: none; }
+.mob-multi[aria-pressed="true"] {
+  background: var(--accent, #00ff88);
+  color: var(--bg-1, #0a0f0d);
+  border-color: var(--accent, #00ff88);
+}
+
+.touch-marquee {
+  position: absolute; z-index: 15; pointer-events: none;
+  border: 1px solid var(--accent, #00ff88);
+  background: rgba(0, 255, 136, 0.12);
+}
+
+/* -- floating touch tool rail -- */
+.mob-tool-rail {
+  /* bottom:auto plus a max-height that reserves the tallest sheet (45dvh) does
+     two jobs. The box hugs its buttons instead of stretching to bottom:96px -
+     692px of translucent column for 467px of content - and no rail button can
+     end up underneath an open sheet, which used to leave the colour swatch and
+     the last few tools unreachable without closing the sheet first. On a short
+     phone the rail scrolls instead; it already has overflow-y:auto. */
+  position: absolute; left: max(8px, env(safe-area-inset-left)); top: var(--mob-topbar-h);
+  bottom: auto; z-index: 25;
+  /* border-box for the same reason .mob-sheet needs it: otherwise the 6px padding
+     and 1px border sit outside max-height and the rail runs 14px past the band,
+     straight back under the sheet. */
+  box-sizing: border-box;
+  max-height: calc(100dvh - var(--mob-topbar-h) - 45dvh - 8px);
+  display: flex; flex-direction: column; gap: 3px;
+  padding: 6px; overflow-y: auto; overscroll-behavior: contain;
+  background: rgba(0, 0, 0, 0.55); border: 1px solid var(--line, #1c2e26);
+  border-radius: 12px; pointer-events: none;
+}
+.mob-tool-rail > * { pointer-events: auto; }
+.mob-tool-btn, .mob-tool-swatch {
+  /* 40px, not 44: nine items at 44 plus gaps came to 456px against the 400px band
+     the rail now gets, so the colour swatch at the foot was scrolled out of sight
+     on boot. At 40 with a 3px gap all nine fit a 390x844 phone with no scroll,
+     and 40 matches the floor used for the sheet controls. */
+  width: 40px; height: 40px; flex-shrink: 0; padding: 0;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--line, #1c2e26); border-radius: 8px;
+  background: rgba(0, 0, 0, 0.4); color: var(--ink-lo, #6c8e7a);
+  touch-action: manipulation; cursor: pointer;
+}
+.mob-tool-btn.active {
+  background: var(--accent, #00ff88); border-color: var(--accent, #00ff88);
+  color: var(--bg-0, #07090a);
+}
+.mob-tool-btn:focus-visible, .mob-tool-swatch:focus-visible {
+  outline: 2px solid var(--accent, #00ff88); outline-offset: 2px;
+}
+.mob-tool-icon { width: 24px; height: 24px; display: block; pointer-events: none; }
+img.mob-tool-icon { filter: invert(0.7) sepia(1) saturate(0.4); }
+.mob-tool-btn.active img.mob-tool-icon { filter: invert(1); }
+.mob-tool-swatch { border-width: 2px; }
+
+/* -- touch colour sheet -- */
+.mob-coloursheet[hidden] { display: none; }
+.mob-coloursheet { display: flex; flex-direction: column; gap: 8px; align-items: center; }
+.mcs-slots { display: flex; gap: 8px; }
+.mcs-slot {
+  width: 44px; height: 44px; border-radius: 8px;
+  border: 1px solid var(--line, #1c2e26); touch-action: manipulation; cursor: pointer;
+}
+.mcs-slot.active { outline: 2px solid var(--accent, #00ff88); outline-offset: 2px; }
+.mcs-slot.empty {
+  background-image: linear-gradient(45deg, var(--bg-3, #132620) 25%, transparent 25%,
+    transparent 75%, var(--bg-3, #132620) 75%);
+  background-size: 12px 12px;
+}
+/* 200px, not 240: the wheel is the single largest element in the app on a phone,
+   and at 240 plus a 44px brightness strip the colour sheet ran to 59% of the
+   screen. 200px still gives roughly 2px of hue per degree at the rim. */
+.mcs-wheel { position: relative; width: 200px; height: 200px; }
+.mcs-wheel-canvas { width: 200px; height: 200px; touch-action: none; }
+.mcs-wheel-cursor {
+  position: absolute; width: 14px; height: 14px; margin: -7px 0 0 -7px;
+  border: 2px solid #fff; border-radius: 50%; pointer-events: none;
+  box-shadow: 0 0 3px #000;
+}
+.mcs-brightness { width: 200px; height: 36px; touch-action: none; }
+.mcs-hex-row { display: flex; align-items: center; gap: 4px; }
+.mcs-hex { width: 110px; min-height: 44px; }
+
+/* -- tool-settings sheet -- */
+.mob-toolsheet { display: flex; flex-direction: column; gap: 8px; }
+
+/* -- keyboard auto-pan sheet lift -- */
+.mob-sheet { transition: transform 0.18s ease; }
+
+/* -- menu-sheet action launcher -- */
+.mob-menu-group { margin-top: 10px; }
+.mob-menu-group:first-child { margin-top: 0; }
+.mob-menu-group h3 {
+  margin: 0 0 6px; font-size: 11px; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--ink-lo, #6c8e7a);
+}
+.mob-menu-action {
+  display: block; width: 100%; min-height: 40px; margin-top: 4px;
+  padding: 0 12px; text-align: left;
+  border: 1px solid var(--line, #1c2e26); border-radius: 8px;
+  background: rgba(0, 0, 0, 0.4); color: var(--ink-hi, #c9d1c8);
+  font: inherit; touch-action: manipulation; cursor: pointer;
+}
+.mob-menu-action:focus-visible { outline: 2px solid var(--accent, #00ff88); outline-offset: 2px; }
+
+/* Map sheet. The picker is the desktop listbox, so it arrives at sidebar
+   proportions; lay it out as a two-column grid of 44px-plus tap targets and
+   let the sheet scroll if six maps plus the callouts row overflow. */
+.mob-mapsheet .map-dropdown-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.mob-mapsheet .map-dropdown-row {
+  min-height: 56px;
+}
+
+/* The callouts row spans both columns - it is not a map. */
+.mob-mapsheet .map-dropdown-callouts-row {
+  grid-column: 1 / -1;
+  min-height: 48px;
+}
+
+/* View sheet: the layer chips reflow to three columns so six of them fit a
+   360px phone without a horizontal scroll, then the two view actions stack. */
+.mob-viewsheet .layer-visibility-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.mob-viewsheet .layer-visibility-btn {
+  min-height: 44px;
+}
+
+.mob-viewsheet-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+/* Notes sheet: a tall-ish textarea, capped so the on-screen keyboard still
+   leaves the field visible once KeyboardAutoPan has scrolled it up. */
+.mob-notessheet .notes-pane-textarea {
+  width: 100%;
+  min-height: 30vh;
+  max-height: 40vh;
+  resize: none;
+}
+
+/* -- HUD overlays vs the compact top bar --
+   The desktop positions assume the topbar sits outside #map-viewer. In compact it
+   overlaps them, so reserve the band. */
+#app[data-layout="compact"] .discord-link { top: calc(var(--mob-topbar-h) + 8px); }
+/* The hint covers the action buttons and the onboarding tour does its job, so drop it. */
+#app[data-layout="compact"] .canvas-hint { display: none; }
+
+/* The title button shows when its sheet is open - tapping it used to change
+   nothing about the button itself, only the sheet appearing gave it away. */
+.mob-title-btn[aria-expanded="true"] { color: var(--accent, #00ff88); }
+.mob-title-btn[aria-expanded="true"]::after { content: ' \25b4'; opacity: 1; }
+
+/* -- PR B: short wide screens (a phone held sideways) --
+   Keyed on height and width, deliberately not on orientation. The problem is a
+   short viewport, not a rotated one: a 1024x768 touch tablet is already compact
+   (pointer: coarse) and has ample room for a bottom sheet, so it has to miss this
+   block. The min-width keeps a 390x500 squashed window from being handed a 400px
+   side sheet it cannot fit. */
+@media (max-height: 500px) and (min-width: 600px) {
+  /* 109px of a 390px axis was 28% of the screen. The buttons are 44px, so the 6px
+     of padding above and below is the only height left to give back.
+     env(safe-area-inset-top) still applies on top of that and reads 0 on Android
+     in landscape - sideways the cutout moves to a side, handled further down. */
+  #app[data-layout="compact"] {
+    --mob-topbar-h: 46px;
+    --mob-strip-h: 46px;
+  }
+  .mob-topbar {
+    min-height: var(--mob-topbar-h);
+    padding-top: max(1px, env(safe-area-inset-top));
+    padding-bottom: 1px;
+  }
+  #app[data-layout="compact"] [data-testid="frame-timeline"] {
+    padding-top: 1px;
+    padding-bottom: calc(1px + env(safe-area-inset-bottom));
+  }
+
+  /* Nine items need 396px but only 283px (390 - 46 - 46 - 16) is free, so wrap
+     into two columns. Column-major on purpose: row-major would zigzag the tools
+     and break the top-to-bottom order. Five rows fits eight tools plus the
+     colour swatch; an eleventh item opens a third column. */
+  .mob-tool-rail {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(5, 40px);
+    grid-auto-columns: 40px;
+    max-height: calc(100dvh - var(--mob-topbar-h) - var(--mob-strip-h) - 16px);
+  }
+
+  /* The sheets become a right-hand column. A 45dvh band is 176px of a 390px
+     screen and spans all 844px for content that wants about 250 - the menu showed
+     2 of its 13 rows and the colour wheel was cut in half. 400x299 instead.
+     Top and bottom stop at the bands, so the top bar's five buttons and the
+     strip's play button stay reachable while a sheet is open. That is the
+     invariant #41 set for the rail, now held for the other two chrome regions.
+     The keyboard-inset term carries over from the bottom-sheet rule. */
+  .mob-sheet {
+    left: auto;
+    right: 0;
+    top: var(--mob-topbar-h);
+    bottom: calc(var(--mob-strip-h) + env(keyboard-inset-height, 0px));
+    width: min(400px, 50vw);
+    max-height: none;
+    border-top: 0;
+    border-left: 1px solid var(--line, #1c2e26);
+    border-radius: 14px 0 0 14px;
+  }
+
+  /* notes-pane.css gives .notes-pane height:100%, which claims the sheet's whole
+     content box and then the h3 sits on top of it - 328px of content in a 298px
+     sheet, so the foot of the textarea was below the fold. Portrait hides this
+     because 45dvh leaves slack. Let the pane flex instead, and drop the 40vh cap
+     so the field uses the space it is given - it shrinks correctly when the
+     on-screen keyboard lifts the sheet's bottom edge. */
+  .mob-notessheet { display: flex; flex-direction: column; }
+  .mob-notessheet .notes-pane { height: auto; }
+  .mob-notessheet .notes-pane-textarea { max-height: none; }
+
+  /* The colour sheet was the one that still scrolled - 358px of content in 298.
+     The wheel would have to drop under 130px across to fit vertically, which is
+     unusable, so it goes sideways instead: wheel on the right spanning every
+     row, the three control rows stacked on the left. No DOM change needed, the
+     four children are already siblings in this order. Height becomes about 220. */
+  .mob-coloursheet {
+    display: grid;
+    grid-template-columns: 1fr 200px;
+    grid-template-rows: auto auto auto;
+    align-content: start;
+    align-items: center;
+    gap: 8px 12px;
+    width: min(500px, 62vw);
+  }
+  .mcs-slots      { grid-column: 1; grid-row: 1; }
+  .mcs-wheel      { grid-column: 2; grid-row: 1 / span 3; }
+  .mcs-brightness { grid-column: 1; grid-row: 2; }
+  .mcs-hex-row    { grid-column: 1; grid-row: 3; }
+
+  /* Two columns for the ~730px menu launcher; the rest scrolls. Grid, NOT
+     column-count: multicol in a fixed-height box spills new columns sideways, off
+     the right edge, instead of overflowing into the sheet's scroll. */
+  .mob-sheet[data-testid="mobile-sheet"] {
+    width: min(520px, 64vw);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 14px;
+    align-content: start;
+  }
+}
+
+/* In compact the tool rail mounts into #map-viewer at left:8px and wins on z-index
+   (25 vs 20), hiding a top-left legend. Bottom-right is clear of the rail and the
+   Discord link, and the legend grows upward. Right-of-the-rail would need a
+   rail-width variable that rots when MOBILE_TOOL_ORDER changes. */
+#app[data-layout="compact"] #player-legend {
+  top: auto;
+  left: auto;
+  right: 12px;
+  bottom: calc(var(--mob-strip-h) + 8px);
+}
+
+/* -- Round 5: the per-item action menu --
+   A popover at the finger, not a sheet, but it goes through sheetManager for
+   dismissal so it is mutually exclusive with the six sheets. Above the rail's
+   z-index 25 and the sheets' 30, because it can open over either. */
+.mob-itemmenu {
+  position: absolute; z-index: 35;
+  box-sizing: border-box;
+  min-width: 168px;
+  display: flex; flex-direction: column; gap: 2px;
+  padding: 4px;
+  background: var(--bg-2, #0d1513);
+  border: 1px solid var(--line, #1c2e26);
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+  color: var(--ink-hi, #c9d1c8);
+  font: 13px/1.5 system-ui, sans-serif;
+}
+.mob-itemmenu-row {
+  display: block; width: 100%; min-height: 44px;
+  padding: 0 12px; text-align: left;
+  border: 0; border-radius: 7px;
+  background: none; color: inherit; font: inherit;
+  touch-action: manipulation; cursor: pointer;
+}
+.mob-itemmenu-row:active { background: rgba(255, 255, 255, 0.08); }
+.mob-itemmenu-row:focus-visible { outline: 2px solid var(--accent, #00ff88); outline-offset: -2px; }

@@ -1,0 +1,104 @@
+.changelog-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.changelog-modal[hidden] { display: none !important; }
+
+.changelog-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.changelog-modal-panel {
+  position: relative;
+  width: 560px;
+  max-width: calc(100vw - 80px);
+  max-height: 80vh;
+  background: var(--bg-2, #0d1513);
+  border: 1px solid var(--line, #1c2e26);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+}
+
+.changelog-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line, #1c2e26);
+}
+
+.changelog-modal-title {
+  font-family: var(--font-display, 'Rajdhani', sans-serif);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 2px;
+  color: var(--accent, #00ff88);
+}
+
+.changelog-modal-close {
+  background: transparent;
+  border: none;
+  color: var(--ink-lo, #6c8e7a);
+  font-size: 22px;
+  line-height: 1;
+  padding: 0 4px;
+  cursor: pointer;
+}
+
+.changelog-modal-close:hover { color: var(--ink-hi, #c9d1c8); }
+
+.changelog-modal-body {
+  padding: 18px 22px;
+  overflow-y: auto;
+  color: var(--ink-hi, #c9d1c8);
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.changelog-modal-body h2 {
+  font-family: var(--font-display, 'Rajdhani', sans-serif);
+  font-size: 16px;
+  letter-spacing: 1px;
+  color: var(--accent, #00ff88);
+  margin: 0 0 12px;
+}
+
+.changelog-modal-body h3 {
+  font-family: var(--font-display, 'Rajdhani', sans-serif);
+  font-size: 13px;
+  letter-spacing: 1px;
+  color: var(--ink-hi, #c9d1c8);
+  margin: 14px 0 6px;
+}
+
+.changelog-modal-body ul { padding-left: 20px; margin: 0 0 8px; }
+.changelog-modal-body li { margin-bottom: 4px; }
+.changelog-modal-body code { background: var(--bg-3, #132620); padding: 1px 4px; border-radius: 2px; font-size: 12px; }
+
+/* -- compact reflow. ChangelogModal mounts on document.body (a
+   sibling of #app), so the hook is the layoutMode media query, not a
+   data-layout selector. The panel fills the viewport (less a small
+   safe-area inset) and the close button gets a 44px touch target. -- */
+@media (pointer: coarse), (max-width: 900px) {
+  .changelog-modal {
+    padding: max(8px, env(safe-area-inset-top)) max(8px, env(safe-area-inset-right))
+             max(8px, env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left));
+  }
+  .changelog-modal-panel {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    max-height: 100%;
+  }
+  .changelog-modal-close { min-width: 44px; min-height: 44px; }
+}
